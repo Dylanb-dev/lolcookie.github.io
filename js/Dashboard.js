@@ -15,6 +15,7 @@ function makeGraphs(error, apiData) {
 	//Define Dimensions
 	var nightlyPrice = ndx.dimension(function(d) { return d.nightly_price; });
 	var roomType = ndx.dimension(function(d) { return d.room_type; });
+  var roomType2 = ndx.dimension(function(d) { return d.room_type; });
 	var ratingCheckin = ndx.dimension(function(d) { return d.rating_checkin; });
 	var satisfactionGuest = ndx.dimension(function(d) { return d.satisfaction_guest; });
 	var responseTime = ndx.dimension(function(d) { return d.responseTime; });
@@ -24,6 +25,7 @@ function makeGraphs(error, apiData) {
 
 	//Calculate metrics
 	var propertiesByType = roomType.group();
+  var propertiesByType2 = roomType2.group();
 	var propertiesByRatings = ratingCheckin.group();
 	var propertiesByGuests = satisfactionGuest.group();
 	var propertiesByCapacity = personCapacity.group();
@@ -71,7 +73,7 @@ function makeGraphs(error, apiData) {
 
   selectField = dc.selectMenu('#menuselect')
         .dimension(roomType)
-        .group(propertiesByType);
+        .group(propertiesByType)
 
        dc.dataCount("#row-selection")
         .dimension(ndx)
@@ -124,14 +126,16 @@ function makeGraphs(error, apiData) {
   //       .xAxis().ticks(4);
   //
   //
+
+
       fundingStatusChart
         .height(220)
         //.width(350)
         .radius(90)
         .innerRadius(40)
         .transitionDuration(1000)
-        .dimension(roomType)
-        .group(propertiesByType);
+        .dimension(roomType2)
+        .group(propertiesByType2);
   //
   //
   //   stateDonations
