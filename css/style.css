@@ -22,6 +22,7 @@
 	}
 
 	h1, h2, h3 {
+		color: #8A8A8A;
 		margin: 0px;
 		padding: 0px;
 		font-weight: 300;
@@ -676,8 +677,10 @@ ul.style3 .first {
 	#header
 	{
 		position: relative;
+		background: rgb(49, 130, 189);
 		text-align: center;
 		background-size: cover;
+
 	}
 
 
