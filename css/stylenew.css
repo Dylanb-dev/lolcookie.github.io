@@ -70,8 +70,8 @@ transform: translateX(-50%);
 }
 
 
-        #total-projects {
-                background: #33CC99;
+        #total-properties {
+                background: #6baed6;
                 width: 200px;
                 position:relative;
                 height:60px;
@@ -84,7 +84,7 @@ transform: translateX(-50%);
             }
 
         #net-donations {
-                background: #33CC99;
+                background: #6baed6;
                 width: 200px;
                 position:relative;
                 height:60px;
@@ -96,7 +96,7 @@ transform: translateX(-50%);
                 padding-bottom: 0px;
             }
         .dc-select-menu {
-                background: #33CC99;
+                background: #6baed6;
                 width: 80%;
                 border:none;
                 position:relative;
@@ -118,6 +118,8 @@ transform: translateX(-50%);
     fill: #FFFFFF;
     fill-opacity: 0.01;
 }
+
+.dc-chart text.pie-slice {fill: black;}
 
 .component {
     fill: #e1e1e1;

@@ -8,6 +8,7 @@ function makeGraphs(error, apiData) {
 	var dataSet = apiData;
 	dataSet.forEach(function(d) {
 		d.nightly_price = Number(d.nightly_price.replace(/[^0-9\.]+/g,""));
+    console.log(isNaN(d.nightly_price));
 	});
   console.log(dataSet[0]);
 
@@ -25,7 +26,6 @@ function makeGraphs(error, apiData) {
 
 
 	//Calculate metrics
-	var propertiesByPrice = nightlyPrice.group();
 	var propertiesByType = roomType.group();
 	var propertiesByRatings = ratingCheckin.group();
 	var propertiesByGuests = satisfactionGuest.group();
@@ -39,6 +39,12 @@ function makeGraphs(error, apiData) {
     totalProperties = totalProperties+1;
     return totalProperties;
 	});
+
+  var n_bins = 30;
+  var xExtent = d3.extent(dataSet, function(d) { return d.nightly_price; });
+  var binWidth = (xExtent[1] - xExtent[0]) / n_bins;
+  var propertiesByPrice = nightlyPrice.group(function(d){return Math.floor(d / binWidth) * binWidth;});
+
 
 	var totalTypes = roomType.group().reduceSum(function(d) {
 		return d.room_type;
@@ -57,11 +63,11 @@ function makeGraphs(error, apiData) {
 
     //Charts
   var totalproperties = dc.numberDisplay("#total-properties");
-  var netDonations = dc.numberDisplay("#net-donations");
-  // var dateChart = dc.lineChart("#date-chart");
+  // var netDonations = dc.numberDisplay("#net-donations");
+  var dateChart = dc.barChart("#date-chart");
   // var gradeLevelChart = dc.rowChart("#grade-chart");
 	var resourceTypeChart = dc.rowChart("#resource-chart");
-	// var fundingStatusChart = dc.pieChart("#funding-chart");
+	var fundingStatusChart = dc.pieChart("#funding-chart");
 	// var povertyLevelChart = dc.rowChart("#poverty-chart");
 	// var stateDonations = dc.barChart("#state-donations");
 
@@ -80,32 +86,30 @@ function makeGraphs(error, apiData) {
 		.valueAccessor(function(d){return d; })
 		.group(all);
 
-	netDonations
-		.formatNumber(d3.format("d"))
-		.valueAccessor(function(d){return d; })
-		.group(totalProperties)
-		.formatNumber(d3.format(".3s"));
 
-	// dateChart
-	// 	//.width(600)
-	// 	.height(220)
-	// 	.margins({top: 10, right: 50, bottom: 30, left: 50})
-	// 	.dimension(datePosted)
-	// 	.group(propertiesByDate)
-	// 	.renderArea(true)
-	// 	.transitionDuration(500)
-	// 	.x(d3.time.scale().domain([minDate, maxDate]))
-	// 	.elasticY(true)
-	// 	.renderHorizontalGridLines(true)
-  //   	.renderVerticalGridLines(true)
-	// 	.xAxisLabel("Year")
-	// 	.yAxis().ticks(6);
+	dateChart
+    .xUnits(function(){return n_bins;})
+		.width(600)
+		.height(220)
+		.margins({top: 10, right: 50, bottom: 30, left: 50})
+		.dimension(nightlyPrice)
+		.group(propertiesByPrice)
+		.transitionDuration(500)
+    .clipPadding(10)
+    .round(Math.floor)
+    .centerBar(false)
+    .x(d3.scale.linear().domain(xExtent).range([0,n_bins]))
+    .elasticY(true)
+    .xAxisLabel("Number of Properties")
+		.xAxisLabel("Price")
+    .xAxis().ticks(4)
+		// .yAxis().ticks(6);
 
 	resourceTypeChart
         //.width(300)
         .height(220)
-        .dimension(roomType)
-        .group(propertiesByType)
+        .dimension(personCapacity)
+        .group(propertiesByCapacity)
         .elasticX(true)
         .xAxis().ticks(5);
 
@@ -124,14 +128,14 @@ function makeGraphs(error, apiData) {
   //       .xAxis().ticks(4);
   //
   //
-  //         fundingStatusChart
-  //           .height(220)
-  //           //.width(350)
-  //           .radius(90)
-  //           .innerRadius(40)
-  //           .transitionDuration(1000)
-  //           .dimension(fundingStatus)
-  //           .group(propertiesByFundingStatus);
+      fundingStatusChart
+        .height(220)
+        //.width(350)
+        .radius(90)
+        .innerRadius(40)
+        .transitionDuration(1000)
+        .dimension(roomType)
+        .group(propertiesByType);
   //
   //
   //   stateDonations
