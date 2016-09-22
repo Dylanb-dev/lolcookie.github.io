@@ -88,7 +88,7 @@ function makeGraphs(error, apiData) {
 
 	dateChart
     .xUnits(function(){return n_bins;})
-		.width(600)
+		// .width(600)
 		.height(220)
 		.margins({top: 10, right: 50, bottom: 30, left: 50})
 		.dimension(nightlyPrice)
@@ -98,19 +98,18 @@ function makeGraphs(error, apiData) {
     .centerBar(false)
     .x(d3.scale.linear().domain([0,300]))
     .elasticY(true)
-    .xAxisLabel("Number of Properties")
+    .yAxisLabel("Number of Properties")
 		.xAxisLabel("Price")
-    .xAxis().ticks(4)
+    .xAxis().ticks(4);
 		// .yAxis().ticks(6);
 
 	resourceTypeChart
-        //.width(300)
+        .width(300)
         .height(220)
         .dimension(personCapacity)
         .group(propertiesByCapacity)
         .elasticX(true)
-        .xAxis().ticks(5);
-
+        // .xAxis().ticks(5)
 	// povertyLevelChart
 	// 	//.width(300)
 	// 	.height(220)
