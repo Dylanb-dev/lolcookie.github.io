@@ -3,14 +3,11 @@ queue()
     .await(makeGraphs);
 
 function makeGraphs(error, apiData) {
-  console.log(apiData[0]);
-//Start Transformations
+  //Start Transformations
 	var dataSet = apiData;
 	dataSet.forEach(function(d) {
 		d.nightly_price = Number(d.nightly_price.replace(/[^0-9\.]+/g,""));
-    console.log(isNaN(d.nightly_price));
 	});
-  console.log(dataSet[0]);
 
 	//Create a Crossfilter instance
 	var ndx = crossfilter(dataSet);

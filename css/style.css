@@ -47,7 +47,7 @@
 		{
 			display: inline-block;
 		}
-		
+
 			.image img
 			{
 				display: block;
@@ -60,20 +60,20 @@
 				width: 100%;
 				margin: 0 0 2em 0;
 			}
-			
+
 			.image.full
 			{
 				display: block;
 				width: 100%;
 				margin: 0 0 2em 0;
 			}
-			
+
 			.image.left
 			{
 				float: left;
 				margin: 0 2em 2em 0;
 			}
-			
+
 			.image.centered
 			{
 				display: block;
@@ -104,7 +104,7 @@
 	header .byline
 	{
 	}
-	
+
 /*********************************************************************************/
 /* Icons                                                                         */
 /* Powered by Font Awesome by Dave Gandy | http://fontawesome.io                 */
@@ -119,7 +119,7 @@
 		.fa.solo
 		{
 		}
-		
+
 			.fa.solo span
 			{
 				display: none;
@@ -532,7 +532,7 @@
 		.fa-wheelchair:before{content:"\f193"}
 		.fa-vimeo-square:before{content:"\f194"}
 		.fa-turkish-lira:before,.fa-try:before{content:"\f195"}
-	
+
 
 /** LIST STYLE 1 */
 
@@ -624,7 +624,7 @@ ul.style3 .first {
 /** BUTTON STYLE */
 
 	/* Buttons */
-		
+
 		.button
 		{
 			position: relative;
@@ -677,7 +677,6 @@ ul.style3 .first {
 	{
 		position: relative;
 		text-align: center;
-		background: url(../images/banner.jpg) no-repeat center;
 		background-size: cover;
 	}
 
@@ -686,7 +685,7 @@ ul.style3 .first {
 		padding: 5em 0em;
 		background: #FFF
 	}
-	
+
 	#content header
 	{
 		margin-bottom: 2em !important;
@@ -701,7 +700,7 @@ ul.style3 .first {
 	#content
 	{
 	}
-	
+
 	#footer
 	{
 		padding: 5em 0em;
@@ -711,28 +710,28 @@ ul.style3 .first {
 /*********************************************************************************/
 /* Copyright                                                                     */
 /*********************************************************************************/
-	
+
 	#copyright
 	{
 		position: relative;
 		text-align: center;
 	}
-	
+
 	#copyright .container
 	{
 		padding: 3em 0em;
 		border-top: 1px solid;
 		border-color: rgba(0,0,0,.1);
 	}
-	
+
 	#copyright a
 	{
 		text-decoration: none;
 	}
-	
-	
+
+
 	#main
 	{
 		padding: 5em 0em;
 		background: #FFF
-	}	
+	}
