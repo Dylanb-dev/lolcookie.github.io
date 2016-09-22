@@ -5,4 +5,4 @@
 ## Following https://dc-js.github.io/dc.js/
 
 ##Local Development:
-#http-server -c-1
+`http-server -c-1`
