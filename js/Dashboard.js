@@ -7,6 +7,7 @@ function makeGraphs(error, apiData) {
 	var dataSet = apiData;
 	dataSet.forEach(function(d) {
 		d.nightly_price = Number(d.nightly_price.replace(/[^0-9\.]+/g,""));
+    if(d.satisfaction_guest == null) { d.satisfaction_guest = 0 };
 	});
 
 	//Create a Crossfilter instance
@@ -21,7 +22,7 @@ function makeGraphs(error, apiData) {
 	var responseTime = ndx.dimension(function(d) { return d.responseTime; });
 	var personCapacity = ndx.dimension(function(d) { return d.person_capacity; });
 	var ratingCleanliness  = ndx.dimension(function(d) { return d.rating_cleanliness; });
-
+  var runDimension = ndx.dimension(function(d) {return [+d.rev_count, +d.satisfaction_guest]; });
 
 	//Calculate metrics
 	var propertiesByType = roomType.group();
@@ -29,6 +30,7 @@ function makeGraphs(error, apiData) {
 	var propertiesByRatings = ratingCheckin.group();
 	var propertiesByGuests = satisfactionGuest.group();
 	var propertiesByCapacity = personCapacity.group();
+  var speedSumGroup = runDimension.group().reduceSum(function(d) { return d.rev_count; });
 
 	var all = ndx.groupAll();
 
@@ -61,13 +63,13 @@ function makeGraphs(error, apiData) {
 // console.log(maxDate);
 
     //Charts
-  var totalproperties = dc.numberDisplay("#total-properties");
+  var totalnum = dc.numberDisplay("#total-properties");
   // var netDonations = dc.numberDisplay("#net-donations");
-  var dateChart = dc.barChart("#date-chart");
-  // var gradeLevelChart = dc.rowChart("#grade-chart");
-	var resourceTypeChart = dc.rowChart("#resource-chart");
-	var fundingStatusChart = dc.pieChart("#funding-chart");
-	// var povertyLevelChart = dc.rowChart("#poverty-chart");
+  var barChart = dc.barChart("#date-chart");
+  var rowChartA = dc.rowChart("#grade-chart");
+	var rowChartB = dc.rowChart("#resource-chart");
+	var pieChart = dc.pieChart("#funding-chart");
+	var scatterPlot = dc.scatterPlot("#poverty-chart");
 	// var stateDonations = dc.barChart("#state-donations");
 
 
@@ -80,13 +82,13 @@ function makeGraphs(error, apiData) {
         .group(all);
 
 
-	totalproperties
+	totalnum
 		.formatNumber(d3.format("d"))
 		.valueAccessor(function(d){return d; })
 		.group(all);
 
 
-	dateChart
+	barChart
     .xUnits(function(){return n_bins;})
 		// .width(600)
 		.height(220)
@@ -103,31 +105,36 @@ function makeGraphs(error, apiData) {
     .xAxis().ticks(4);
 		// .yAxis().ticks(6);
 
-	resourceTypeChart
+	rowChartB
         .width(300)
         .height(220)
         .dimension(personCapacity)
         .group(propertiesByCapacity)
         .elasticX(true)
         // .xAxis().ticks(5)
-	// povertyLevelChart
-	// 	//.width(300)
-	// 	.height(220)
-  //       .dimension(povertyLevel)
-  //       .group(propertiesByPovertyLevel)
-  //       .xAxis().ticks(4);
-  //
-	// gradeLevelChart
-	// 	//.width(300)
-	// 	.height(220)
-  //       .dimension(gradeLevel)
-  //       .group(propertiesByGrade)
-  //       .xAxis().ticks(4);
+	scatterPlot
+		//.width(300)
+    .height(440)
+    .x(d3.scale.linear().domain([0,150]))
+    .y(d3.scale.linear().domain([60,100]))
+    .symbolSize(8)
+    .clipPadding(10)
+    .yAxisLabel("Guest Satisfaction")
+    .xAxisLabel("Number of Reviews")
+    .dimension(runDimension)
+    .group(speedSumGroup);
+
+	rowChartA
+		//.width(300)
+		.height(440)
+        .dimension(satisfactionGuest)
+        .group(propertiesByGuests)
+        .xAxis().ticks(4);
   //
   //
 
 
-      fundingStatusChart
+      pieChart
         .height(220)
         //.width(350)
         .radius(90)
